@@ -1,0 +1,90 @@
+#FARD_verFull - Multi-modal input, T1 output (inplane) - copied from confs/BRATS/conf_41
+#train flags
+Train: true
+test: false
+project_name: revision_BRATS
+addInputToPerceptual: true
+perceptualLoss: vgg
+perceptualNet: vgg.vgg16
+overridePerceptualArgs: false
+val: true
+in_ch: 3
+kernels: !!python/tuple [3,3]
+cosineAnneal: true
+# modality names:
+mod: ['t1n_LR_4x']
+#network parameters:
+loadCheckpoint: true
+collate_fn: pad_list_data_collate
+modelName: FARD
+cnnModule: FARD_verFull
+batchSize: 32
+blockSize: !!python/tuple [534,534]
+loss: ['vggL1','ssim','criterion']
+learningRate: 1e-6
+etaMin: 1e-9
+gradient_clip: true
+FineTune: true
+RunOnly: true
+metrics:
+  - SSIM
+  - PSNR
+
+metricForSaving: SSIM
+ds: 4
+STACK: true
+CONTRAST: false
+combined_network: true
+numEpochs: 80
+amp: false
+small: true
+# monai configurations
+jsonData: Ax_Brats_inplane_fold_1.json
+dataset: denoising_dataset_monai
+shuffle: true
+#transforms
+defaultTransforms: {}
+transforms:
+  LoadImaged:
+    keys: ['input', 'input1','input2','target']
+    ensure_channel_first: true
+
+  Transposed:
+    keys: ['input', 'input1','input2','target']
+    indices: [0,2,1]
+
+  Flipd:
+    keys: ['input', 'input1','input2','target']
+    spatial_axis: 0
+
+  ResizeWithPadOrCropd:
+    keys: ['input', 'input1','input2','target']
+    spatial_size: [ 240, 240]
+
+  ConcatItemsd:
+    keys: ['input','input1','input2']
+    name: 'input'
+    dim: 0
+  ConcatItemsd1:
+    keys: ['target']
+    name: 'target'
+    dim: 0
+#gali
+gali_mode: false
+#SWIN UNETR
+# 1 - T1, 2 - T1c,3 - T2, 4 - FLAIR
+modality_conv: 0,1
+#loss parameters:
+losses: MRILoss
+criterion: L1Loss
+loss_coeff: [1,0.07,0.85]
+dontLog: false
+attention_type: 'gated'
+dropout_rate: 0.0
+reduction: 1
+pool_factor: 8
+#mri loss parameters:
+alpha_loss: 0.2
+SSIMloss: true
+beta_loss: 0.015
+full_kspace: false

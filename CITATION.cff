@@ -1,0 +1,66 @@
+cff-version: 1.2.0
+title: >-
+  FARD — Frequency Attention Residual Denoising, from
+  "Multi-Contrast MRI Acceleration via Post-Reconstruction Fusion"
+message: >-
+  If you use this software, please cite the paper it implements.
+type: software
+license: MIT  # the FARD architecture itself is CC-BY-NC-4.0; see LICENSE-FARD
+
+authors:
+  - family-names: Nazarov
+    given-names: Alexander
+    email: nazarov@mail.tau.ac.il
+    affiliation: >-
+      School of Electrical and Computer Engineering,
+      Tel Aviv University, Israel
+  - family-names: Kiryati
+    given-names: Nahum
+    affiliation: >-
+      School of Electrical and Computer Engineering,
+      Tel Aviv University, Israel
+  - family-names: Roizen
+    given-names: Dani
+    affiliation: Diagnostic Imaging, Sheba Medical Center, Israel
+  - family-names: Kerpel
+    given-names: Ariel
+    affiliation: Diagnostic Imaging, Sheba Medical Center, Israel
+  - family-names: Hoffmann
+    given-names: Chen
+    affiliation: Diagnostic Imaging, Sheba Medical Center, Israel
+  - family-names: Greenberg
+    given-names: Gahl
+    affiliation: Diagnostic Imaging, Sheba Medical Center, Israel
+  - family-names: Mayer
+    given-names: Arnaldo
+    affiliation: Diagnostic Imaging, Sheba Medical Center, Israel
+
+keywords:
+  - deep learning
+  - super-resolution
+  - image enhancement
+  - MRI acceleration
+  - multi-contrast
+
+# Accepted; awaiting publication. TODO: add doi, volume and pages once it appears.
+preferred-citation:
+  type: article
+  title: Multi-Contrast MRI Acceleration via Post-Reconstruction Fusion
+  journal: Medical Image Analysis
+  year: 2026
+  status: in-press
+  authors:
+    - family-names: Nazarov
+      given-names: Alexander
+    - family-names: Kiryati
+      given-names: Nahum
+    - family-names: Roizen
+      given-names: Dani
+    - family-names: Kerpel
+      given-names: Ariel
+    - family-names: Hoffmann
+      given-names: Chen
+    - family-names: Greenberg
+      given-names: Gahl
+    - family-names: Mayer
+      given-names: Arnaldo

@@ -1,0 +1,10 @@
+case: [101]
+
+target: T1_HR
+calc_3d: false
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_1/registration_C_anonymized
+use_npy: false
+base_result_dir:  /media/alex/DATA/AlexN/results/3_modal_sheba
+device: cuda
+amp: false
+slices: [0,0]

@@ -1,0 +1,32 @@
+confs_to_process: [41, 42, 49]
+
+target: t1n  # fallback
+target_per_conf:
+  41: t1n
+  42: t2w
+  49: t2f
+
+input_per_conf:
+  41: t1n_LR_4x
+  42: t2w_LR_4x
+  49: t2f_LR_4x
+
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/BRATS
+
+metrics: ['SSIM','PSNR','FSIM']
+
+slices: [30,30]
+save_images: false
+enable_transform_visualization: false
+enable_slice_preview: false
+use_npy: true
+
+transforms:
+  transpose:
+    keys: ['output']
+    dims: [0,2,1]
+  flip:
+    keys: ['output']
+    dims: [1,2]
+  crop: [150,140]

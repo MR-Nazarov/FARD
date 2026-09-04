@@ -1,0 +1,45 @@
+# Example configuration for saving difference maps with separate colorbar
+# This shows how to use the new save_colorbar_separately option
+
+confs_to_process: [1]
+
+target: t2f
+input: t2f_LR_4x
+base_data_dir: /path/to/your/data
+base_result_dir: /path/to/your/results
+
+metrics: ['SSIM', 'PSNR']
+
+slices: [30, 30]
+
+# Image saving options
+save_images: true
+save_predictions: true
+save_targets: true
+save_inputs: true
+save_differences: true
+save_input_differences: true  # Also save input vs target difference
+save_overlays: false
+
+# Colorbar options - NEW FEATURE
+save_colorbar_separately: true  # Save colorbar as a separate image (no title on diff image)
+add_colorbar: false              # Don't add colorbar to the main image (only used if save_colorbar_separately is false)
+
+# Difference normalization options
+normalize_differences: true
+diff_normalization_method: 'minmax'  # Options: 'minmax', 'percentile', 'relative', 'global'
+
+# Image format
+image_format: 'png'
+image_quality: 95
+
+# Visualization options
+enable_transform_visualization: false
+enable_slice_preview: false
+
+# Output directory
+images_output_dir: 'saved_images_with_separate_colorbar'
+
+# Transforms (optional)
+transforms:
+  crop: [150, 140]

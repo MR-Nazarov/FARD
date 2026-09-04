@@ -1,0 +1,29 @@
+confs_to_process: [345]
+
+target: FLAIR_HR_axial
+#input: BICUBIC_FLAIR_LR_axial
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_5/registration_C_anonymized
+
+base_result_dir:  /media/alex/DATA/AlexN/old_env/ALex/code/Backbone_test
+enable_transform_visualization: true  # Enable to debug transforms
+enable_slice_preview: true
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+slices: [60,60]
+
+transforms:
+#  clip_output:
+#    min_val: 0.0
+#    keys: [ 'output' ]
+
+#  transpose_to_sagittal:
+#  keys: [ 'output', 'target', 'input' ]  # Convert ALL to sagittal
+#  dims: [ 2,0,1 ]  # [D,W,H] -> [H,W,D]
+#  pad_or_crop:
+#    size: [365, 365]           # crop/pad H and W to match pred spatial dims
+#    keys: ['output', 'target', 'input']
+  transpose: [2,0,1]
+  flip: [1]
+  crop: [400,330] #400-330
+  #crop: [380,420] #87
+  #crop: [450,460]-71
+  #brain_bbox: 2

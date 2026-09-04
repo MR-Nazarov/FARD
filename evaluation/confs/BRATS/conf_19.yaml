@@ -1,0 +1,69 @@
+# Case 117 images — all comparison models in BRATS dir — normalize_by_target
+confs_to_process: [21, 22, 23, 41, 42, 49, 51, 52, 53, 63, 7001, 7002, 7003]
+specific_cases: [117]
+
+target_per_conf:
+  21: t1n
+  22: t2w
+  23: t2f
+  41: t1n
+  42: t2w
+  49: t2f
+  51: t1n
+  52: t2w
+  53: t2f
+  63: t2f
+  7001: t1n
+  7002: t2w
+  7003: t2f
+
+input_per_conf:
+  21: t1n_LR_4x
+  22: t2w_LR_4x
+  23: t2f_LR_4x
+  41: t1n_LR_4x
+  42: t2w_LR_4x
+  49: t2f_LR_4x
+  51: t1n_LR_4x
+  52: t2w_LR_4x
+  53: t2f_LR_4x
+  63: t2f_LR_4x
+  7001: t1n_LR_4x
+  7002: t1n_LR_4x
+  7003: t1n_LR_4x
+
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/BRATS
+
+metrics: ['SSIM','PSNR','FSIM']
+
+slices: [30,30]
+save_images: true
+print_specific_slices: true
+specific_slice_indices: [90]
+save_inputs: true
+save_differences: true
+save_input_differences: true
+save_colorbar_separately: true
+normalize_differences: true
+diff_normalization_method: 'nad'
+nad_colorbar_max: 0.30
+enable_transform_visualization: false
+enable_slice_preview: false
+use_npy: true
+
+normalize_for_metrics: false
+normalize_by_target: true
+
+transforms:
+  clip_output:
+    min_val: 0.0
+    max_val: 1.0
+    keys: ['output']
+  transpose:
+    keys: ['output']
+    dims: [0,2,1]
+  flip:
+    keys: ['output']
+    dims: [1,2]
+  crop: [150,140]

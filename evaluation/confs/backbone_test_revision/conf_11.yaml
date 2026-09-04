@@ -1,0 +1,14 @@
+confs_to_process: [165]
+
+target: T2_HR
+input: BICUBIC_T2_LR
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_5/registration_C_anonymized
+
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/cpwdeblur/results/Backbone_test_revision
+enable_transform_visualization: false
+enable_slice_preview: false
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+slices: [60,60]
+
+transforms:
+  crop: [400,330]

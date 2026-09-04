@@ -1,0 +1,38 @@
+inheritFrom: confs/examples/sheba_3ch_t1.yaml
+batchSize: 1
+separate_metrics: 'true'
+metrics:
+- SSIM
+- PSNR
+- FSIM
+- LPIPS
+transforms:
+  LoadImaged:
+    keys:
+      - input
+      - input1
+      - input2
+      - target
+    ensure_channel_first: true
+  Transposed:
+    keys:
+      - input
+      - input1
+      - input2
+      - target
+    indices:
+    - 0
+    - 2
+    - 1
+  ConcatItemsd:
+    keys:
+      - input
+      - input1
+      - input2
+    name: input
+    dim: 0
+  ConcatItemsd1:
+    keys:
+      - target
+    name: target
+    dim: 0

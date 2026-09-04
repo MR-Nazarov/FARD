@@ -1,0 +1,59 @@
+# Classical deblur baseline (RL and Wiener, §4.1.1 and data-driven axes, bicubic)
+# Conf numbers:
+#   RL §4.1.1:       200(T1n)  201(T2w)  202(FLAIR)
+#   RL data-driven:  210(T1n)  211(T2w)  212(FLAIR)
+#   Bicubic:         220(T1n)  221(T2w)  222(FLAIR)
+#   Wiener §4.1.1:   230(T1n)  231(T2w)  232(FLAIR)
+#   Wiener data:     240(T1n)  241(T2w)  242(FLAIR)
+
+confs_to_process: [200, 201, 202, 210, 211, 212, 220, 221, 222, 230, 231, 232, 240, 241, 242]
+
+target_per_conf:
+  200: t1n
+  201: t2w
+  202: t2f
+  210: t1n
+  211: t2w
+  212: t2f
+  220: t1n
+  221: t2w
+  222: t2f
+  230: t1n
+  231: t2w
+  232: t2f
+  240: t1n
+  241: t2w
+  242: t2f
+
+input_per_conf:
+  200: t1n_LR_4x
+  201: t2w_LR_4x
+  202: t2f_LR_4x
+  210: t1n_LR_4x
+  211: t2w_LR_4x
+  212: t2f_LR_4x
+  220: t1n_LR_4x
+  221: t2w_LR_4x
+  222: t2f_LR_4x
+  230: t1n_LR_4x
+  231: t2w_LR_4x
+  232: t2f_LR_4x
+  240: t1n_LR_4x
+  241: t2w_LR_4x
+  242: t2f_LR_4x
+
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/cpwdeblur/results/classical_brats
+
+metrics: ['SSIM', 'PSNR']
+
+use_npy: true
+skip_volume_alignment: true
+permute_pred: [2, 0, 1]
+
+transforms:
+  crop: [150, 140]
+
+slices: [30, 30]
+enable_transform_visualization: false
+enable_slice_preview: false

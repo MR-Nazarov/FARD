@@ -1,0 +1,38 @@
+confs_to_process: [2041]
+
+target: t1n
+#target: t2f,t1n,t2w
+#input: t1n_LR_4x
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial_additional/training
+
+base_result_dir:  /media/alex/DATA/AlexN/old_env/ALex/code/BRATS_WT
+
+metrics: ['MAE']
+
+# Mask-based metric calculation
+calc_in_mask: true  # Set to true to calculate metrics only inside mask regions
+mask_name: seg  # Name of the mask folder/file in the data directory
+mask_classes: [1, 2, 3]  # Which mask labels to include (e.g., [1,2] for specific tumor regions)
+
+# Perilesional ring metrics (requires calc_in_mask: true)
+# WT (Whole Tumor) = labels 1, 2, 3 (excluding label 4 = resection cavity)
+# Brain mask = (HR != 0) since BraTS is skull-stripped
+# Ring = dilated_WT & brain_mask & (~WT)
+calc_ring_metrics: true  # Enable perilesional ring metrics (MAE_WT, MAE_Ring)
+ring_dilation: 3  # Number of voxels to dilate WT for ring calculation
+
+#slices: [2,2]
+# Disable visualizations for faster processing
+enable_transform_visualization: false  # Don't save transform images
+enable_slice_preview: false            # Don't show matplotlib popup
+use_npy: true
+
+transforms:
+  transpose:
+    keys: ['output']
+    dims: [0,2,1]
+  flip:
+    keys: ['output']
+    dims: [1,2]
+  crop: [160,180] #crop: [150,140]
+  #brain_bbox: 2

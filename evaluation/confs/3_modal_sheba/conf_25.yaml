@@ -1,0 +1,25 @@
+# fig_sheba_new case 4 slice 150 — MMMD-Net (303/313/328)
+confs_to_process: [303, 313, 328]
+specific_cases: [4]
+target_per_conf: {303: T1_HR, 313: T2_HR, 328: FLAIR_HR}
+input_per_conf: {303: BICUBIC_T1_LR, 313: BICUBIC_T2_LR, 328: BICUBIC_FLAIR_LR}
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_3/registration_C_anonymized
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/3_modal_sheba
+metrics: ['SSIM','PSNR','FSIM']
+slices: [40,40]
+save_images: true
+print_specific_slices: true
+specific_slice_indices: [150]
+save_inputs: true
+save_differences: true
+save_input_differences: true
+save_colorbar_separately: true
+normalize_differences: true
+diff_normalization_method: 'nad'
+nad_colorbar_max: 0.20
+enable_transform_visualization: false
+enable_slice_preview: false
+normalize_for_metrics: false
+normalize_by_target: true
+transforms:
+  crop: [400, 330]

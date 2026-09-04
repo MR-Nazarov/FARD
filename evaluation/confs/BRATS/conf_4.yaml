@@ -1,0 +1,42 @@
+confs_to_process: [23]
+specific_cases: [117]
+target: t2f
+#target: t2f,t1n,t2w
+input: t2f_LR_4x
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+save_difference_images: true
+normalize_differences: true
+save_colorbar_separately: true
+diff_normalization_method: 'nad'
+nad_foreground_percentile: 95
+nad_foreground_threshold: 0.002
+nad_normalization_percentile: 99
+nad_colorbar_max: 0.3     # Fixed vmax for colorbar (all slices use same scale)
+add_colorbar: false        # Add colorbar to difference images
+colorbar_size: 0.05       # Colorbar width (5% of image width)
+colorbar_pad: 0.02
+base_result_dir:  /media/alex/DATA/AlexN/old_env/ALex/code/BRATS
+save_differences: true
+
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+
+slices: [30,30]
+# Disable visualizations for faster processing
+enable_transform_visualization: true  # Don't save transform images
+enable_slice_preview: true            # Don't show matplotlib popup
+use_npy: true
+save_images: true
+save_inputs: true
+save_input_differences: true
+print_specific_slices: true
+specific_slice_indices: [90]
+transforms:
+  transpose:
+    keys: ['output']
+    dims: [0,2,1]
+  flip:
+    keys: ['output']
+    dims: [1,2]
+
+  crop: [150,140] #crop: [150,140]
+  #brain_bbox: 2

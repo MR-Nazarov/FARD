@@ -1,0 +1,26 @@
+confs_to_process: [45]
+
+target: t2f
+input: t2f_LR_4x
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+
+base_result_dir:  /media/alex/DATA/AlexN/old_env/ALex/code/ablations
+
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+enable_transform_visualization: false  # Don't save transform images
+enable_slice_preview: false            # Don't show matplotlib popup
+
+slices: [30,30]
+
+use_npy: true
+
+transforms:
+  transpose:
+    keys: ['output']
+    dims: [0,2,1]
+  flip:
+     keys: [ 'output' ]
+     dims: [ 1,2 ]  # Horizontal flip only (left-right)
+
+  crop: [150,140]
+  #brain_bbox: 2

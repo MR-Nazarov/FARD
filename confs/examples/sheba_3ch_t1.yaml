@@ -1,0 +1,76 @@
+#train flags
+#single modality T1 - 3 channel regB
+###normalizing the L1  values######
+Train: true
+test: false
+project_name: 3_modal_sheba
+#perceptual net parameters:
+overridePerceptualArgs: false
+addInputToPerceptual: true
+in_ch: 3
+kernels: !!python/tuple [7,3]
+# modality names:
+mod: ['BICUBIC_T1_LR']
+#network parameters:
+loadCheckpoint: true
+collate_fn: pad_list_data_collate
+modelName: UpgradedDnCNN
+cnnModule: DnCNN_deb
+batchSize: 4
+blockSize: !!python/tuple [534,534]
+loss: ['vggL1','ssim']
+loss_coeff: [1.0, 1.0, 1.0]
+learningRate: 0.001
+FineTune: true
+RunOnly: true
+metrics:
+  - SSIM
+  - PSNR
+
+metricForSaving: SSIM
+ds: 4
+STACK: true
+CONTRAST: false
+combined_network: true
+numEpochs: 300
+amp: false
+small: true
+# monai configurations
+jsonData: Saggital_regB_k_fold_1.json
+dataset: denoising_dataset_monai
+shuffle: true
+#transforms
+defaultTransforms: {}
+transforms:
+  LoadImaged:
+    keys: ['input', 'input1','input2','target']
+    ensure_channel_first: true
+
+  Transposed:
+    keys: ['input', 'input1','input2','target']
+    indices: [0,2,1]
+
+  CenterSpatialCropd:
+    keys: ['input', 'input1','input2','target']
+    roi_size: [ 460, 380 ]
+
+  ConcatItemsd:
+    keys: ['input','input1','input2']
+    name: 'input'
+    dim: 0
+  ConcatItemsd1:
+    keys: ['target']
+    name: 'target'
+    dim: 0
+#gali
+gali_mode: false
+#SWIN UNETR
+# 1 - T1, 2 - T1c,3 - T2, 4 - FLAIR
+modality_conv: 0,1
+#loss parameters:
+losses: L1Loss
+SSIMloss: true
+dontLog: false
+## optimizing perceptual loss
+optimize_perceptual: false
+numLeyers: 53

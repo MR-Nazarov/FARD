@@ -1,0 +1,29 @@
+confs_to_process: [411, 412, 413, 421, 422, 423, 431, 432, 433]
+
+target: t1n
+input: t1n_LR_4x
+
+input_per_conf:
+  411: t1n_LR_4x_motion_mild_dncnn
+  412: t1n_LR_4x_motion_moderate_dncnn
+  413: t1n_LR_4x_motion_severe_dncnn
+  421: t2w_LR_4x_motion_mild_dncnn
+  422: t2w_LR_4x_motion_moderate_dncnn
+  423: t2w_LR_4x_motion_severe_dncnn
+  431: t2f_LR_4x_motion_mild_dncnn
+  432: t2f_LR_4x_motion_moderate_dncnn
+  433: t2f_LR_4x_motion_severe_dncnn
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/cpwdeblur/results/motion_corrupt_dncnn
+
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+
+slices: [30,30]
+enable_transform_visualization: false
+enable_slice_preview: false
+use_npy: true
+skip_volume_alignment: false
+brats_align_flip: false   # DnCNN pred is transpose-only (no flip)
+
+transforms:
+  crop: [150,140]

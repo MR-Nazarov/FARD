@@ -1,0 +1,29 @@
+confs_to_process: [611, 612, 613, 621, 622, 623, 631, 632, 633]
+
+target: t2f
+input: t2f_LR_4x
+
+input_per_conf:
+  611: t1n_LR_4x_motion_mild
+  612: t1n_LR_4x_motion_moderate
+  613: t1n_LR_4x_motion_severe
+  621: t2w_LR_4x_motion_mild
+  622: t2w_LR_4x_motion_moderate
+  623: t2w_LR_4x_motion_severe
+  631: t2f_LR_4x_motion_mild
+  632: t2f_LR_4x_motion_moderate
+  633: t2f_LR_4x_motion_severe
+
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/cpwdeblur/results/motion_corrupt
+
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+
+slices: [30,30]
+enable_transform_visualization: false
+enable_slice_preview: false
+use_npy: true
+skip_volume_alignment: true
+
+transforms:
+  crop: [150,140]

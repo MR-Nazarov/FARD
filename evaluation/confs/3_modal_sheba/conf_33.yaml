@@ -1,0 +1,126 @@
+confs_to_process:
+- 21
+- 22
+- 23
+- 24
+- 25
+- 121
+- 122
+- 123
+- 124
+- 125
+- 221
+- 222
+- 223
+- 224
+- 225
+- 41
+- 42
+- 43
+- 44
+- 45
+- 141
+- 142
+- 143
+- 144
+- 145
+- 241
+- 242
+- 243
+- 244
+- 245
+- 61
+- 62
+- 63
+- 64
+- 65
+- 161
+- 162
+- 163
+- 164
+- 165
+- 261
+- 262
+- 263
+- 264
+- 265
+specific_cases:
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+target_per_conf:
+  21: T1_HR
+  22: T1_HR
+  23: T1_HR
+  24: T1_HR
+  25: T1_HR
+  121: T2_HR
+  122: T2_HR
+  123: T2_HR
+  124: T2_HR
+  125: T2_HR
+  221: FLAIR_HR
+  222: FLAIR_HR
+  223: FLAIR_HR
+  224: FLAIR_HR
+  225: FLAIR_HR
+  41: T1_HR
+  42: T1_HR
+  43: T1_HR
+  44: T1_HR
+  45: T1_HR
+  141: T2_HR
+  142: T2_HR
+  143: T2_HR
+  144: T2_HR
+  145: T2_HR
+  241: FLAIR_HR
+  242: FLAIR_HR
+  243: FLAIR_HR
+  244: FLAIR_HR
+  245: FLAIR_HR
+  61: T1_HR
+  62: T1_HR
+  63: T1_HR
+  64: T1_HR
+  65: T1_HR
+  161: T2_HR
+  162: T2_HR
+  163: T2_HR
+  164: T2_HR
+  165: T2_HR
+  261: FLAIR_HR
+  262: FLAIR_HR
+  263: FLAIR_HR
+  264: FLAIR_HR
+  265: FLAIR_HR
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_3/registration_C_anonymized
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/Backbone_test
+metrics:
+- SSIM
+slices:
+- 40
+- 40
+save_images: false
+print_specific_slices: true
+specific_slice_indices:
+- 130
+- 150
+- 170
+- 190
+- 210
+enable_transform_visualization: false
+enable_slice_preview: false
+normalize_for_metrics: false
+normalize_by_target: true
+transforms:
+  crop:
+  - 400
+  - 330

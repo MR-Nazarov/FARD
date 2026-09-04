@@ -1,0 +1,35 @@
+confs_to_process: [81, 82, 83]
+
+target: t1n  # fallback
+target_per_conf:
+  81: t1n
+  82: t2w
+  83: t2f
+
+# input metrics disabled: no input_per_conf / input key -> calculate_input_metrics = False
+# (re-enable by uncommenting; _ip is the correct input per Ax_Brats_inplane_fold_1.json)
+# input_per_conf:
+#   81: t1n_LR_4x_ip
+#   82: t2w_LR_4x_ip
+#   83: t2f_LR_4x_ip
+
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/cpwdeblur/results/revision_BRATS
+
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+
+# skip the per-image min-max [0,1] rescale before metrics (default is True)
+normalize_for_metrics: false
+
+slices: [40,30]
+enable_transform_visualization: false
+enable_slice_preview: false
+use_npy: true
+skip_volume_alignment: true
+
+transforms:
+  transpose:
+    keys: ['output']
+    dims: [0,2,1]
+  crop: [110,110]

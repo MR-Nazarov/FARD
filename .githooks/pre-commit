@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Block commits containing credential-shaped strings.
+# Enabled by: git config core.hooksPath .githooks   (see scripts/setup_hooks.sh)
+exec python3 "$(git rev-parse --show-toplevel)/scripts/check_secrets.py" --staged

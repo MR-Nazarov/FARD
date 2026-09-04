@@ -1,0 +1,105 @@
+# modality names:
+mod1: None
+mod2: None
+mod3: None
+#####
+collate_fn: None
+round: true
+project_name: general_project
+separate_metrics: false
+seed: 42
+metricPath: 'results_logs'
+file: None
+learningRate: 0.001
+kernels: None
+numEpochs: 150
+small: true
+Normalize: false
+LC: false
+postProcessModel: null
+preProcessModel: null
+cnnModule: DnCNN
+modelName: CNN_dual_network
+labelIndsToTake: None
+gali_mode: true
+baseModelPath: models
+
+test: false
+save_img: true
+use_npy: false
+useCachedDS: false
+cache_num: 40
+cache_rate: 1
+threeD: false
+shuffle: false
+
+
+####grad clipping####
+gradient_clip: false  # Enable gradient clipping
+max_grad_norm: 1.0
+imageSize: null
+dropLast: true
+test_case: None
+device: cuda
+metricForSaving: null
+inferer: null
+overlap: 0
+loss2D: true
+loadCheckpoint: true
+description: "2D deblur"
+#michael old transforms
+filename: null
+filenameVal: null
+segmentation: false
+padToLog2: false
+#for test only
+keyTest: test
+baseTargetPath: null
+loadCheckpointInTest: false
+#Optimization:
+criterion: L1Loss
+optimizationMethod: Adam
+betas: !!python/tuple
+- 0.9
+- 0.99
+weight_decay: 0.001
+#schedualer
+T_0: 10 #GALI -5
+etaMin: 1e-7 #was e-6
+T_mult: 1
+metrics:
+  -TP
+cosineAnneal: false
+#logger
+logger: wandb
+dontLog: true          # wandb is opt-in; set false in a conf to log
+#SWIN UNETR
+# 1 - T1, 2 - T1c,3 - T2, 4 - FLAIR
+modality_conv: none
+#perceptual loss
+perceptualLoss: false
+perceptualNetConfig: none
+perceptualNet: none
+perceptualLoss_criterion: L1Loss
+#for test
+iterate: true
+#loss
+losses: None
+SSIMloss: false
+##
+scheduler: none
+# Mixed Percision
+amp: false
+epochToSave: 1
+use_gradient_accumulation: false
+accumulation_steps: 16
+#validation flag
+val: false
+test_save: true
+dataKeys: ['input','target']
+DataParallel: false
+#dataloader_configurations
+workers: 0
+persistent_workers: True
+Perfect_factor: 2
+run_profiling: true

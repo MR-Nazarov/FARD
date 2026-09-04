@@ -1,0 +1,31 @@
+inheritFrom: confs/examples/brats_fard_t1n.yaml
+batchSize: 1
+inferer: sliding_window
+inferenceSize:
+- 224
+- 184
+overlap: 0.8
+sw_batch_size: 100
+metrics:
+- SSIM
+transforms:
+  LoadImaged:
+    keys: ['input', 'input1', 'input2', 'target']
+    ensure_channel_first: true
+  Transposed:
+    keys: ['input', 'input1', 'input2', 'target']
+    indices: [0, 2, 1]
+  ConcatItemsd:
+    keys: ['input', 'input1', 'input2']
+    name: input
+    dim: 0
+  ConcatItemsd1:
+    keys: ['target']
+    name: target
+    dim: 0
+
+# BRATS is stored as .npy slices, so predictions are written as .npy too.
+# Set explicitly: trainer.py otherwise infers it from `project_name` containing
+# "BRATS", which would silently switch to DICOM output if this config were
+# copied under a different project name.
+use_npy: true

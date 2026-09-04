@@ -1,0 +1,12 @@
+#for test only
+keyTest: test
+baseTargetPath: null
+##
+shuffle: false
+test: true
+Train: false
+dontLog: true          # wandb is opt-in; set false in a conf to log
+separate_metrics: false
+save_test: true
+cut_slice: [20,20]
+save_img: true

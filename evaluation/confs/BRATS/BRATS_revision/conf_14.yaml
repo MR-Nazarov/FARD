@@ -1,0 +1,42 @@
+confs_to_process: [31, 32, 33]
+specific_cases: [117]
+
+target: t1n  # fallback
+target_per_conf:
+  31: t1n
+  32: t2w
+  33: t2f
+
+input_per_conf:
+  31: t1n_LR_4x
+  32: t2w_LR_4x
+  33: t2f_LR_4x
+
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/cpwdeblur/results/revision_BRATS
+
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+
+slices: [30,30]
+save_images: true
+print_specific_slices: true
+specific_slice_indices: [90]
+save_inputs: true
+save_differences: true
+save_input_differences: true
+save_colorbar_separately: true
+normalize_differences: true
+diff_normalization_method: 'nad'
+nad_colorbar_max: 0.30
+enable_transform_visualization: false
+enable_slice_preview: false
+use_npy: true
+
+transforms:
+  transpose:
+    keys: ['output']
+    dims: [0,2,1]
+  flip:
+    keys: ['output']
+    dims: [1,2]
+  crop: [150,140]

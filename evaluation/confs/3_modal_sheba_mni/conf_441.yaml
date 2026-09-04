@@ -1,0 +1,16 @@
+confs_to_process: [441]
+target: T1_HR
+input: BICUBIC_T1_LR
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_1/registration_C_anonymized
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/cpwdeblur/results/3_modal_sheba_mni
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+slices: [60,60]
+enable_slice_preview: false
+enable_transform_visualization: false
+save_images: false
+save_inputs: false
+save_differences: false
+save_input_differences: false
+print_specific_slices: false
+transforms:
+  crop: [400,330]

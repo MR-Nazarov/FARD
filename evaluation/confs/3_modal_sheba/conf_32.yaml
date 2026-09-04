@@ -1,0 +1,66 @@
+confs_to_process:
+- 301
+- 302
+- 303
+- 304
+- 305
+- 311
+- 312
+- 313
+- 314
+- 315
+- 326
+- 327
+- 328
+- 329
+- 330
+specific_cases:
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+target_per_conf:
+  301: T1_HR
+  302: T1_HR
+  303: T1_HR
+  304: T1_HR
+  305: T1_HR
+  311: T2_HR
+  312: T2_HR
+  313: T2_HR
+  314: T2_HR
+  315: T2_HR
+  326: FLAIR_HR
+  327: FLAIR_HR
+  328: FLAIR_HR
+  329: FLAIR_HR
+  330: FLAIR_HR
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_3/registration_C_anonymized
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/3_modal_sheba
+metrics:
+- SSIM
+slices:
+- 40
+- 40
+save_images: false
+print_specific_slices: true
+specific_slice_indices:
+- 130
+- 150
+- 170
+- 190
+- 210
+enable_transform_visualization: false
+enable_slice_preview: false
+normalize_for_metrics: false
+normalize_by_target: true
+transforms:
+  crop:
+  - 400
+  - 330

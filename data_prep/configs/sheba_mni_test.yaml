@@ -1,0 +1,46 @@
+# SHEBA registration_B -> registration_C (MNI atlas space), TEST variant.
+#
+# The atlas transform is fitted to a LOW-quality scan (BICUBIC_T1_LR). This is the
+# `high_quality_based_registration = False` branch of the old
+# data/register_to_MNI.py driver -- see README: for test the cross-modal
+# reference should be the low-quality scan.
+#
+# For the TRAINING variant, fit to the high-quality scan instead: see
+# sheba_mni_train.yaml. That is the only difference between the two files.
+
+root: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset
+atlas: /media/alex/DATA/AlexN/3D_MRI/data/atlas/DICOM_icbm152_hires
+
+fold_template: T1_T2_Flair_fixed_{fold}
+folds: [1, 2, 3, 4, 5]
+
+input_stage: registration_B
+output_stage: registration_C
+
+# Fitted to this scan; the resulting rigid transform is saved as
+# hq2mni_transform.tfm next to the outputs.
+reference_scan: BICUBIC_T1_LR
+
+# The fitted transform is replayed on each of these.
+moving_scans:
+  - T2_HR
+  - FLAIR_HR
+  - T1_HR
+  - BICUBIC_T2_LR
+  - BICUBIC_FLAIR_LR
+
+# null = every case directory found under input_stage.
+cases: null
+
+# Seed for the registration metric's random sampling. The original code took
+# SimpleITK's default seed (wall clock), so no registration was reproducible.
+# null restores that behaviour; an int makes runs deterministic.
+sampling_seed: 42
+
+# Output carries Patient Name/ID/Birth Date and Accession Number from the source
+# series. Leave false to reproduce the stored registration_C exactly; set true to
+# write a shareable tree directly (equivalent to the separate
+# data/anonymize_registration_B.py pass).
+anonymize: false
+
+skip_missing: false

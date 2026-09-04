@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+*.log
+
+# Machine-specific data roots (copy local.yaml.example -> local.yaml)
+local.yaml
+
+# Model weights and outputs live outside the repo
+models/
+results/
+wandb/
+*.pth
+
+# Never commit credentials
+.env
+.netrc
+*.key
+*.pem
+secrets.yaml
+
+# Run artifacts
+Quantitative/
+htmls/
+results_logs/
+
+# Dataset indices: large derived files embedding a machine-specific base_dir.
+# Regenerate with data_prep/, or copy alongside. See docs/configs.md.
+json_datasets/

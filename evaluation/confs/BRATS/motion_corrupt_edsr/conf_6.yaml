@@ -1,0 +1,29 @@
+confs_to_process: [611, 612, 613, 621, 622, 623, 631, 632, 633]
+
+target: t2f
+input: t2f_LR_4x
+
+input_per_conf:
+  611: t1n_LR_4x_motion_mild_edsr
+  612: t1n_LR_4x_motion_moderate_edsr
+  613: t1n_LR_4x_motion_severe_edsr
+  621: t2w_LR_4x_motion_mild_edsr
+  622: t2w_LR_4x_motion_moderate_edsr
+  623: t2w_LR_4x_motion_severe_edsr
+  631: t2f_LR_4x_motion_mild_edsr
+  632: t2f_LR_4x_motion_moderate_edsr
+  633: t2f_LR_4x_motion_severe_edsr
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial/test
+base_result_dir: /media/alex/DATA/AlexN/old_env/ALex/code/cpwdeblur/results/motion_corrupt_edsr
+
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+
+slices: [30,30]
+enable_transform_visualization: false
+enable_slice_preview: false
+use_npy: true
+skip_volume_alignment: false
+brats_align_flip: true   # EDSR pipeline flips (transpose+flip)
+
+transforms:
+  crop: [150,140]

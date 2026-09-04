@@ -1,0 +1,47 @@
+# SHEBA stage A + stage B: LR-HR and cross-modal rigid registration (elastix).
+#
+#   original/            --stage A-->  registration_A_{T1,T2,FLAIR}/
+#   registration_A_*/    --stage B-->  registration_B/
+#
+# Stage A registers each modality's HQ scan onto its own bicubic-upsampled LQ
+# scan. Stage B registers the non-reference modalities onto the reference one,
+# writing {moving}_to_{fixed}_rigid_body_tfm.txt and its inverse.
+
+root: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset
+
+fold_template: T1_T2_Flair_fixed_{fold}
+folds: [1, 2, 3, 4, 5]
+
+input_stage: original
+stage_a_template: registration_A_{mod}
+stage_b_stage: registration_B
+
+# Three contrasts. The old driver hardcoded two (T1 and "T2_1mm"), which is why
+# its transform files were named with_c_to_without_c_* rather than the
+# {moving}_to_{fixed}_* names the data on disk actually uses.
+modalities: [T1, T2, FLAIR]
+reference_modality: T1
+
+hq_name: '{mod}_HR'
+lq_name: 'BICUBIC_{mod}_LR'
+
+# The fitted transform is replayed onto these as well.
+companions: ['BICUBIC_{mod}_LR']
+
+# true  -> fit on the HQ scans   (README: use for TRAINING data)
+# false -> fit on the LQ scans   (README: use for TEST data)
+# This replaces the `high_quality_based_registration` literal in the old driver.
+hq_based: true
+
+# null = every case directory found under input_stage.
+cases: null
+
+skip_missing: false
+
+# elastix parameter overrides on top of the stock 'rigid' map.
+# Stage A's stored parameter files use MaximumNumberOfIterations 512; elastix's
+# default (and what stage B used) is 256. Matching this is what takes stage A
+# from corr ~0.9994 to a faithful reproduction of the stored registration_A_*.
+stage_a_parameters:
+  MaximumNumberOfIterations: 512
+stage_b_parameters: {}

@@ -1,0 +1,29 @@
+confs_to_process: [311]
+
+target: T2_HR
+input: BICUBIC_T2_LR
+save_differences: false
+base_data_dir: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_1/registration_C_anonymized
+normalize_differences: true
+diff_normalization_method: 'minmax'
+add_colorbar: true        # Add colorbar to difference images
+colorbar_size: 0.05       # Colorbar width (5% of image width)
+colorbar_pad: 0.02
+base_result_dir:  /media/alex/DATA/AlexN/old_env/ALex/code/3_modal_sheba
+
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+
+slices: [60,60]
+save_images: true
+save_inputs: true
+save_input_differences: true
+print_specific_slices: true
+specific_slice_indices: [205]
+transforms:
+#  transpose: [2,0,1]
+#  flip: [1]
+
+  crop: [400,330] #400-330
+  #crop: [380,420] #87
+  #crop: [450,460]-71
+  #brain_bbox: 2

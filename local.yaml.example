@@ -1,0 +1,23 @@
+# Machine-specific data roots. Copy to local.yaml (gitignored) and edit.
+#
+# Dataset indices under json_datasets/ store the absolute `base_dir` of the
+# machine that built them. _resolve_base_dir() in datasets/monai_dataset.py
+# looks that stored path up here and substitutes the local one, so the same
+# index file works on any machine.
+#
+# Left-hand side  = the base_dir recorded inside the JSON (do not change it)
+# Right-hand side = where that data lives on THIS machine
+#
+# If data is not found, fix this file. Never edit the JSONs -- their paths are
+# relative to the key on the left, and rewriting them breaks portability.
+
+base_dir_map:
+  # --- BRATS: .npy slices, expects <root>/{training,test}/<case>/<contrast>/slice_NNN.npy
+  /media/alex/drive2/DATASETS/MRI_deblur/BRATS/GLI/data/slices_axial: /path/to/BRATS/slices_axial
+
+  # --- SHEBA: DICOM, expects <root>/T1_T2_Flair_fixed_<fold>/registration_<stage>/<case>/<scan>/
+  /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset: /path/to/SHEBA_dataset
+
+  # Some SHEBA folds reference a per-fold registration directory directly rather
+  # than the dataset root. Add an entry per fold if your indices do that:
+  # /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_1/registration_C_anonymized: /path/to/SHEBA_dataset/T1_T2_Flair_fixed_1/registration_C_anonymized

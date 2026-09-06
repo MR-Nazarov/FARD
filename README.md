@@ -1,7 +1,7 @@
 # FARD — Multi-Contrast MRI Acceleration via Post-Reconstruction Fusion
 
 Reference implementation of **FARD** (Frequency Attention Residual Denoising), a
-0.28M-parameter reference-free multi-contrast fusion network that refines
+lightweight reference-free multi-contrast fusion network that refines
 vendor-reconstructed magnitude images from complementary orthogonal
 phase-encoding acquisitions — no raw k-space, no high-resolution reference
 contrast.
@@ -115,13 +115,21 @@ docs/configs.md     how to write a config
 
 ## Weights
 
-Weights are published separately rather than committed. Each is a bare
-`state_dict` for FARD's 0.28M parameters — about 2 MB per file. Place them at
-`models/<project_name>/<conf>.pth`.
+Weights live on the Hugging Face Hub rather than in this repository:
 
-The whole robustness study needs **three files**, one per output contrast, not one
-per config. [docs/WEIGHTS.md](docs/WEIGHTS.md) has the checksums and the
-config-to-weights mapping.
+**https://huggingface.co/Lexer1/FARD**
+
+```bash
+hf download Lexer1/FARD --local-dir weights/
+```
+
+Three files, one per output contrast, ~2 MB each — weights only, no optimizer or
+scheduler state. Place them at `models/<project_name>/<conf>.pth`, or load
+directly with `safetensors`.
+
+The whole robustness study needs **three files**, not one per config.
+[docs/WEIGHTS.md](docs/WEIGHTS.md) has the checksums, the config-to-weights
+mapping, and the input channel order each checkpoint expects.
 
 ## Reproducibility notes
 

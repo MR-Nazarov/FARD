@@ -1,0 +1,26 @@
+# Scoring example - SHEBA, three-contrast reg-B ablation (T1 output).
+#
+# The scoring counterpart to confs/examples/sheba_3ch_t1.yaml. SHEBA output is
+# DICOM at raw intensity while the ground truth is normalised, so the tester
+# min-max normalises both before computing metrics -- do not use the trainer's
+# built-in metrics for this data.
+#
+#   cd evaluation
+#   python -c "from tester import main; main(project='examples', conf='sheba_regb_t1')"
+
+confs_to_process: [441]
+target: T1_HR
+input: BICUBIC_T1_LR
+base_data_dir: ${FARD_DATA}/SHEBA_dataset/T1_T2_Flair_fixed_1/registration_B_anonymized
+base_result_dir: ${FARD_RESULTS}/3_modal_sheba
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+slices: [60,60]
+enable_slice_preview: false
+enable_transform_visualization: false
+save_images: false
+save_inputs: false
+save_differences: false
+save_input_differences: false
+print_specific_slices: false
+transforms:
+  crop: [330,330]

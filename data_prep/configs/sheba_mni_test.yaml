@@ -8,8 +8,8 @@
 # For the TRAINING variant, fit to the high-quality scan instead: see
 # sheba_mni_train.yaml. That is the only difference between the two files.
 
-root: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset
-atlas: /media/alex/DATA/AlexN/3D_MRI/data/atlas/DICOM_icbm152_hires
+root: ${FARD_DATA}/SHEBA_dataset
+atlas: ${FARD_ATLAS}
 
 fold_template: T1_T2_Flair_fixed_{fold}
 folds: [1, 2, 3, 4, 5]

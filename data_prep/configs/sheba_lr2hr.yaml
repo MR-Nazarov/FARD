@@ -7,7 +7,7 @@
 # scan. Stage B registers the non-reference modalities onto the reference one,
 # writing {moving}_to_{fixed}_rigid_body_tfm.txt and its inverse.
 
-root: /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset
+root: ${FARD_DATA}/SHEBA_dataset
 
 fold_template: T1_T2_Flair_fixed_{fold}
 folds: [1, 2, 3, 4, 5]

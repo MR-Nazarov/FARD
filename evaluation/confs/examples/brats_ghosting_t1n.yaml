@@ -1,0 +1,41 @@
+# Scoring example - BRATS, FARD under ghosting corruption (T1n output).
+#
+# Scores predictions against ground truth for the nine ghosting configs of one
+# output contrast. `input_per_conf` points each config at its own corrupted
+# input, so the CorruptInput column reflects what the model actually saw.
+#
+#   cd evaluation
+#   python -c "from tester import main; main(project='examples', conf='brats_ghosting_t1n')"
+#
+# ${FARD_DATA} and ${FARD_RESULTS} resolve from the environment, or from the
+# `paths:` block of local.yaml. See docs/configs.md.
+
+confs_to_process: [111, 112, 113, 121, 122, 123, 131, 132, 133]
+
+target: t1n
+input: t1n_LR_4x
+
+input_per_conf:
+  111: t1n_LR_4x_ghost_mild
+  112: t1n_LR_4x_ghost_moderate
+  113: t1n_LR_4x_ghost_severe
+  121: t2w_LR_4x_ghost_mild
+  122: t2w_LR_4x_ghost_moderate
+  123: t2w_LR_4x_ghost_severe
+  131: t2f_LR_4x_ghost_mild
+  132: t2f_LR_4x_ghost_moderate
+  133: t2f_LR_4x_ghost_severe
+
+base_data_dir: ${FARD_DATA}/BRATS/GLI/data/slices_axial/test
+base_result_dir: ${FARD_RESULTS}/motion_corrupt
+
+metrics: ['SSIM','PSNR','FSIM','LPIPS']
+
+slices: [30,30]
+enable_transform_visualization: false
+enable_slice_preview: false
+use_npy: true
+skip_volume_alignment: true
+
+transforms:
+  crop: [150,140]

@@ -2,6 +2,8 @@
 # Copyright (c) 2026 the FARD authors. See LICENSE.
 
 import copy
+import re
+import os
 import yaml
 from pathlib import Path
 import numpy as np
@@ -178,10 +180,63 @@ def override_args(args, newArgs):
     return args
 
 
+def expand_paths(args):
+    """Substitute ``${NAME}`` in string values from the environment.
+
+    Configs name data and result roots symbolically -- ``${FARD_DATA}``,
+    ``${FARD_RESULTS}`` -- rather than hardcoding one machine's layout. A name is
+    resolved from the environment first, then from the ``paths:`` block of
+    ``local.yaml``.
+
+    An unresolved placeholder raises rather than silently producing a path with a
+    literal ``${...}`` in it, which would surface later as a confusing
+    file-not-found.
+    """
+    # local.yaml lives at the repository root. Resolve it relative to this file
+    # rather than the working directory -- the evaluation scripts chdir into
+    # evaluation/, and a cwd-relative lookup silently found nothing there.
+    local = {}
+    for candidate in (Path(__file__).resolve().parent / 'local.yaml', Path('local.yaml')):
+        if candidate.exists():
+            local = (yaml.safe_load(candidate.read_text()) or {}).get('paths', {}) or {}
+            break
+
+    pattern = re.compile(r'\$\{([A-Za-z_][A-Za-z0-9_]*)\}')
+
+    def resolve(value):
+        if not isinstance(value, str) or '${' not in value:
+            return value
+        missing = []
+
+        def sub(m):
+            name = m.group(1)
+            got = os.environ.get(name, local.get(name))
+            if got is None:
+                missing.append(name)
+                return m.group(0)
+            return str(got)
+
+        out = pattern.sub(sub, value)
+        if missing:
+            raise KeyError(
+                f'unresolved path placeholder(s) {sorted(set(missing))} in {value!r}. '
+                f'Set them in the environment, or add a `paths:` entry to local.yaml '
+                f'(copy local.yaml.example).')
+        return out
+
+    for k in list(args):
+        if isinstance(args[k], str):
+            args[k] = resolve(args[k])
+        elif isinstance(args[k], dict):
+            args[k] = {kk: resolve(vv) for kk, vv in args[k].items()}
+    return args
+
+
 def process_args(args, noDefaults=False, path='confs'):
     if not noDefaults:
         args = add_defaults(args, path=path)
     args = fix_args_if_needed(args)
+    args = expand_paths(args)
     return args
 
 

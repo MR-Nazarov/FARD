@@ -145,6 +145,34 @@ The two examples reference `Ax_Brats_inplane_fold_1.json` and
 `Saggital_regB_k_fold_1.json`; you will need those, or a `--set jsonData=...`
 pointing at your own.
 
+## Scoring configs
+
+Evaluation has its own configs under `evaluation/confs/`, separate from the
+training ones. Two examples ship, mirroring the training pair.
+
+They differ from training configs in one way worth knowing: data and result roots
+are named symbolically.
+
+```yaml
+base_data_dir:   ${FARD_DATA}/BRATS/GLI/data/slices_axial/test
+base_result_dir: ${FARD_RESULTS}/motion_corrupt
+```
+
+`${NAME}` resolves from the environment first, then from the `paths:` block of
+`local.yaml`. An unresolved name raises at load time — the alternative, a path
+containing a literal `${...}`, surfaces much later as a confusing
+file-not-found.
+
+Fields specific to scoring:
+
+| Field | What it does |
+|---|---|
+| `confs_to_process` | which prediction configs to score |
+| `input_per_conf` | per-config input directory, so a corruption sweep scores against what the model actually saw |
+| `slices` | slice range to score, `[a, b]` inclusive |
+| `skip_volume_alignment` | skip the BRATS pred/GT alignment pass — FARD's pipeline needs this true |
+| `normalize_for_metrics` | min-max both to [0,1] first. Required for SHEBA, whose DICOM output and normalised ground truth are on different scales |
+
 ## The test twin
 
 A test conf is short, because `inheritFrom` supplies the rest:

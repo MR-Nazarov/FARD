@@ -68,12 +68,24 @@ yields nonsense (PSNR ≈ −30). Score through `evaluation/` instead:
 
 ```bash
 cd evaluation
-python -c "from tester import main; main(project='BRATS/motion_corrupt', conf=1)"
+python -c "from tester import main; main(project='examples', conf='brats_ghosting_t1n')"
 ```
 
-Scoring configurations live in `evaluation/confs/`, keyed by experiment. The
-`score_*.py` scripts drive the tester over a whole sweep and emit the metrics
-CSVs.
+Two worked scoring configurations ship in `evaluation/confs/examples/`, mirroring
+the two training examples — one BRATS, one SHEBA. They name their data and result
+roots symbolically:
+
+```yaml
+base_data_dir:   ${FARD_DATA}/BRATS/GLI/data/slices_axial/test
+base_result_dir: ${FARD_RESULTS}/motion_corrupt
+```
+
+`${FARD_DATA}` and `${FARD_RESULTS}` resolve from the environment, or from the
+`paths:` block of `local.yaml`. An unresolved name raises immediately rather than
+producing a path with a literal `${...}` in it.
+
+The `score_*.py` scripts drive the tester across a whole sweep and emit the
+metrics CSVs; adapt one of the examples to the configs you want scored.
 
 ## Prepare data from scratch
 

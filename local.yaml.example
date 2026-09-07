@@ -21,3 +21,10 @@ base_dir_map:
   # Some SHEBA folds reference a per-fold registration directory directly rather
   # than the dataset root. Add an entry per fold if your indices do that:
   # /media/alex/drive2/DATASETS/MRI_deblur/SHEBA_dataset/T1_T2_Flair_fixed_1/registration_C_anonymized: /path/to/SHEBA_dataset/T1_T2_Flair_fixed_1/registration_C_anonymized
+
+# Roots referenced symbolically by the evaluation configs as ${FARD_DATA} and
+# ${FARD_RESULTS}. Environment variables of the same name take precedence.
+paths:
+  FARD_DATA: /path/to/datasets
+  FARD_RESULTS: /path/to/results
+  FARD_ATLAS:   /path/to/atlas/DICOM_icbm152_hires

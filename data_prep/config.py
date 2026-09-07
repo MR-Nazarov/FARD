@@ -8,11 +8,51 @@ Replaces the module-level constants and ``if __name__`` literals in
 edited in source is a field here.
 """
 
+import os
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Optional
 
 import yaml
+
+_PLACEHOLDER = re.compile(r'\$\{([A-Za-z_][A-Za-z0-9_]*)\}')
+
+
+def expand(raw: dict) -> dict:
+    """Resolve ``${NAME}`` in config values.
+
+    Roots are named symbolically so a config is not tied to one machine. A name
+    resolves from the environment first, then from the ``paths:`` block of
+    ``local.yaml`` at the repository root. An unresolved name raises, rather than
+    yielding a path with a literal ``${...}`` that fails confusingly later.
+    """
+    local = {}
+    localPath = Path(__file__).resolve().parent.parent / 'local.yaml'
+    if localPath.exists():
+        local = (yaml.safe_load(localPath.read_text()) or {}).get('paths', {}) or {}
+
+    def resolve(value):
+        if not isinstance(value, str) or '${' not in value:
+            return value
+        missing = []
+
+        def sub(m):
+            got = os.environ.get(m.group(1), local.get(m.group(1)))
+            if got is None:
+                missing.append(m.group(1))
+                return m.group(0)
+            return str(got)
+
+        out = _PLACEHOLDER.sub(sub, value)
+        if missing:
+            raise KeyError(
+                f'unresolved path placeholder(s) {sorted(set(missing))} in {value!r}. '
+                f'Set them in the environment, or add a `paths:` entry to local.yaml '
+                f'(copy local.yaml.example).')
+        return out
+
+    return {k: resolve(v) for k, v in (raw or {}).items()}
 
 
 @dataclass
@@ -82,7 +122,7 @@ class RegistrationConfig:
     @classmethod
     def from_yaml(cls, path) -> 'RegistrationConfig':
         path = Path(path)
-        raw = yaml.safe_load(path.read_text())
+        raw = expand(yaml.safe_load(path.read_text()))
         unknown = set(raw) - {f for f in cls.__dataclass_fields__}
         if unknown:
             raise ValueError(

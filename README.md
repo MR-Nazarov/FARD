@@ -26,6 +26,15 @@ Verified against Python 3.11.11, PyTorch 2.9.1, CUDA 12.8, on an RTX 3090.
 A GPU is needed for training and inference; the data-preparation and scoring
 paths run on CPU.
 
+## Data
+
+**BRATS** is public — BraTS-GLI 2024, obtained from the challenge organisers.
+
+**SHEBA** is the prospectively acquired clinical cohort described in the paper:
+10 subjects, three contrasts each, paired accelerated and high-resolution. A
+de-identified release is being prepared; this section will carry the link once it
+is deposited. Until then the SHEBA path here is code and configuration only.
+
 ## Point it at your data
 
 Dataset indices (`json_datasets/*.json`) list every slice path and embed the

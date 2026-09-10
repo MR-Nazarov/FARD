@@ -1,71 +1,110 @@
 # Prospectively accelerated brain MRI — complementary phase encoding
 
-Paired accelerated and high-resolution brain MRI acquired on a 1.5T Philips
-Ingenia Ambition S, supporting *Multi-Contrast MRI Acceleration via
-Post-Reconstruction Fusion* (Medical Image Analysis, 2026).
+Paired accelerated and high-resolution brain MRI from 10 subjects, acquired on a
+1.5T Philips Ingenia Ambition S. Supporting data for *Multi-Contrast MRI
+Acceleration via Post-Reconstruction Fusion* (Medical Image Analysis, 2026).
 
-Each subject was scanned with three routine contrasts — T1-weighted, T2-weighted
-and T2-FLAIR — each accelerated by reducing the phase-encoding matrix along a
-**different** orthogonal axis. The resulting volumes lose resolution along
-different directions, so their spatial-frequency content is complementary. A
-matched high-resolution acquisition of each contrast is included as reference.
+Each subject was scanned with three routine contrasts — T1-weighted,
+T2-weighted and T2-FLAIR — each accelerated by reducing the phase-encoding
+matrix along a **different** orthogonal axis. The resulting volumes lose
+resolution along different directions, so their spatial-frequency content is
+complementary: what one contrast cannot resolve, another can. A matched
+high-resolution acquisition of each contrast is included as reference.
+
+This is what makes the dataset unusual. Most accelerated-MRI data is
+retrospectively undersampled from fully sampled k-space, which does not
+reproduce vendor reconstruction or real prospective acquisition. These scans
+were **prospectively acquired at the accelerated settings** on a clinical
+scanner and are released as vendor-reconstructed magnitude images.
 
 ## Contents
 
 ```
-<case>/
-  T1_HR/  T2_HR/  FLAIR_HR/                 high-resolution reference
-  T1_LR/  T2_LR/  FLAIR_LR/                 accelerated acquisition
+<subject>/
+  T1_HR/   T2_HR/   FLAIR_HR/                high-resolution reference
+  T1_LR/   T2_LR/   FLAIR_LR/                prospectively accelerated
   BICUBIC_T1_LR/ BICUBIC_T2_LR/ BICUBIC_FLAIR_LR/
-                                            accelerated, bicubic-upsampled to
-                                            the reference grid
+                                             accelerated, bicubic-upsampled
+                                             onto the reference grid
 ```
 
-DICOM throughout. The bicubic series are derived from the `*_LR` series and are
-included so the model inputs used in the paper are reproducible exactly.
+10 subjects · 9 series each · 15,720 DICOM files · 6.3 GB.
 
-TODO: subjects, total size, per-contrast matrix sizes, and the acquisition
-parameter table (TR/TE/flip angle/FOV per contrast).
+The `BICUBIC_*` series are derived from the `*_LR` series by interpolation, and
+are included so the model inputs used in the paper are reproducible exactly
+rather than approximately.
+
+## Acquisition
+
+| Series | Slices | Matrix | In-plane (mm) | Slice (mm) | TR (ms) | TE (ms) | Flip |
+|---|---|---|---|---|---|---|---|
+| `T1_HR` | 180 | 384×384 | 0.625×0.625 | 1.00 | 7.46–7.55 | 3.39–3.43 | 8° |
+| `T2_HR` | 180 | 720×720 | 0.333×0.333 | 1.00 | 3000 | 260 | 90° |
+| `FLAIR_HR` | 197 | 384×384 | 0.625×0.625 | 1.00 | 4800 | 300 | 90° |
+| `T1_LR` | 180 | 240×240 | 1.000×1.000 | 1.00 | 7.46–7.54 | 3.39–3.43 | 8° |
+| `T2_LR` | 180 | 240×240 | 1.000×1.000 | 1.00 | 3000 | 260 | 90° |
+| `FLAIR_LR` | 98 | 384×384 | 0.625×0.625 | 4.00 | 4800 | 300 | 90° |
+
+The `BICUBIC_*` series match their `*_HR` counterpart's grid by construction.
+
+Field strength 1.5T throughout. Intensity rescale slope and intercept are in the
+standard `RescaleSlope` / `RescaleIntercept` elements (see de-identification
+below).
 
 ## De-identification
 
-Every file was de-identified before release:
+Every file was de-identified before release, and every file was then re-read and
+checked. The release contains no file that failed that check.
 
-- DICOM PS3.15 Annex E basic profile applied via `dicognito`, replacing patient
-  name, identifier, accession number, referring physician, institution and
-  station with surrogate values.
-- Study, series and SOP Instance UIDs, and the Frame of Reference UID, were
+- DICOM PS3.15 Annex E basic profile applied via `dicognito`: patient name,
+  identifier, accession number, referring physician, institution, address and
+  station replaced with surrogate values.
+- Study, Series and SOP Instance UIDs and the Frame of Reference UID
   regenerated. Remapping is consistent, so series and study relationships are
-  preserved.
-- Study and series dates were shifted consistently; relative timing within a
-  study is preserved, absolute dates are not real.
+  preserved — slices of a series still share a `SeriesInstanceUID`.
+- Study and series dates shifted consistently. Relative timing within a study is
+  preserved; absolute dates are not real.
 - All private tags removed. **Note:** on this scanner the intensity rescale
-  slope and intercept are stored only in Philips private tags
-  `(2005,140A)`/`(2005,1409)`. They were promoted to the standard
-  `RescaleSlope`/`RescaleIntercept` before the private blocks were stripped, so
-  pixel values remain convertible to real intensities.
+  slope and intercept were stored *only* in Philips private tags
+  `(2005,140A)`/`(2005,1409)`; the standard elements were absent. They were
+  promoted to `RescaleSlope`/`RescaleIntercept` before the private blocks were
+  stripped, so pixel values remain convertible to real intensities.
 - `DeviceSerialNumber` and other device and free-text identifiers removed.
-- Every written file was re-read and checked for residual identifiers; the
-  release contains no file that failed that check.
+- No patient attributes are retained: sex, age, weight, size, ethnic group and
+  patient history were all removed. None is needed for image restoration, and
+  with a cohort this small their combination would be a quasi-identifier.
+  `PatientSex` is a Type 2 element, so it remains present but empty as the
+  standard requires.
 
 Pixel data is unmodified. Acquisition parameters (TR, TE, flip angle, pixel
 spacing, slice thickness, field strength) are preserved.
 
-No patient attributes are retained. Sex, age, weight, size, ethnic group and
-patient history were removed — none is needed for image restoration, and with a
-cohort this small their combination would be a quasi-identifier. `PatientSex` is
-a Type 2 element, so it remains present but empty as the standard requires.
+The de-identification is reproducible: `data_prep/deidentify.py` in the code
+repository below.
 
-TODO: state the ethics approval and the consent basis for public release.
+## Ethics
+
+<!-- REPLACE the bracketed fields with the actual approval details. -->
+
+This study was approved by the Institutional Review Board of [INSTITUTION]
+(approval number [NUMBER], [DATE]). It was conducted in accordance with the
+Declaration of Helsinki. [Written informed consent was obtained from all
+participants / The requirement for informed consent was waived by the IRB],
+including consent for the release of de-identified imaging data for research
+use.
+
+All data in this record has been de-identified as described above. Users must
+not attempt to re-identify participants, and must not link this data to other
+datasets for that purpose.
 
 ## Reproducing the paper
 
-Code: https://github.com/MR-Nazarov/FARD
-Weights: https://huggingface.co/Lexer1/FARD
+- Code: https://github.com/MR-Nazarov/FARD
+- Model weights: https://huggingface.co/Lexer1/FARD
 
 The registration pipeline that turns this raw data into the model's inputs is
-`data_prep/` in the code repository — intra-contrast alignment, inter-contrast
-alignment to an anchor, then anchor-to-MNI.
+`data_prep/` in the code repository: intra-contrast alignment of accelerated to
+reference, inter-contrast alignment to an anchor, then anchor-to-MNI.
 
 ## Citation
 
@@ -82,5 +121,8 @@ alignment to an anchor, then anchor-to-MNI.
 
 ## License
 
-TODO: choose. CC BY-NC 4.0 matches the FARD weights; CC BY 4.0 is more common for
-Zenodo datasets and more permissive for secondary research.
+Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).
+Non-commercial use, with attribution. This matches the license on the FARD model
+weights.
+
+https://creativecommons.org/licenses/by-nc/4.0/

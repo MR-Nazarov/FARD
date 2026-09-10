@@ -1,9 +1,8 @@
 # Stage A + B registration for the published FARD_dataset (Zenodo).
 #
-# The released dataset uses archive-friendly series names -- T1_HR, T1_LR,
-# T1_bicubic -- and one subject per directory under subjects/. The internal
-# SHEBA tree uses BICUBIC_T1_LR and per-fold directories, so it has its own
-# config (sheba_lr2hr.yaml). The registration itself is identical.
+# Series names match the internal tree exactly; only the directory layout
+# differs -- one flat subjects/ directory rather than per-fold directories.
+# sheba_lr2hr.yaml addresses the internal tree.
 #
 #   python -m data_prep.register_lr2hr --config data_prep/configs/fard_dataset_lr2hr.yaml --stage A
 #   python -m data_prep.register_lr2hr --config data_prep/configs/fard_dataset_lr2hr.yaml --stage B
@@ -25,7 +24,7 @@ modalities: [T1, T2, FLAIR]
 reference_modality: T1
 
 hq_name: '{mod}_HR'
-lq_name: '{mod}_bicubic'
+lq_name: 'BICUBIC_{mod}_LR'
 companions: ['{mod}_LR']
 
 # true  -> fit on the HR scans (training data)

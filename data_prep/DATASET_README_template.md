@@ -25,9 +25,9 @@ FARD_dataset/
 ├── LICENSE
 └── subjects/
     ├── sub-01/
-    │   ├── T1_HR/        T1_LR/        T1_bicubic/
-    │   ├── T2_HR/        T2_LR/        T2_bicubic/
-    │   └── FLAIR_HR/     FLAIR_LR/     FLAIR_bicubic/
+    │   ├── T1_HR/     T1_LR/     BICUBIC_T1_LR/
+    │   ├── T2_HR/     T2_LR/     BICUBIC_T2_LR/
+    │   └── FLAIR_HR/  FLAIR_LR/  BICUBIC_FLAIR_LR/
     ├── sub-02/
     ...
     └── sub-10/
@@ -35,13 +35,15 @@ FARD_dataset/
 
 10 subjects · 9 DICOM series each · 15,720 files · 6.3 GB.
 
-| Suffix | What it is |
+| Series | What it is |
 |---|---|
-| `_HR` | high-resolution reference acquisition |
-| `_LR` | prospectively accelerated acquisition |
-| `_bicubic` | the `_LR` series, bicubic-upsampled onto the `_HR` grid |
+| `<contrast>_HR` | high-resolution reference acquisition |
+| `<contrast>_LR` | prospectively accelerated acquisition |
+| `BICUBIC_<contrast>_LR` | the `_LR` series, bicubic-upsampled onto the `_HR` grid |
 
-The `_bicubic` series are derived from `_LR` by interpolation. They are included
+Series names match those the code expects, so the pipeline runs on this download
+without renaming anything. The `BICUBIC_*` series are derived from `_LR` by
+interpolation. They are included
 so the model inputs used in the paper are reproducible exactly rather than
 approximately — the upsampling is part of the method, not a preprocessing
 convenience.
@@ -130,9 +132,9 @@ python -m data_prep.register_lr2hr \
     --config data_prep/configs/fard_dataset_lr2hr.yaml --stage B
 ```
 
-Note that `data_prep/configs/sheba_lr2hr.yaml` addresses the authors' internal
-tree, which uses different series names. Use the `fard_dataset_*` config with
-this download.
+(`sheba_lr2hr.yaml` addresses the authors' internal tree, which is organised by
+fold rather than as a flat subjects directory. Series names are the same in
+both.)
 
 ## Citation
 

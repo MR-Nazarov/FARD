@@ -20,19 +20,33 @@ scanner and are released as vendor-reconstructed magnitude images.
 ## Contents
 
 ```
-<subject>/
-  T1_HR/   T2_HR/   FLAIR_HR/                high-resolution reference
-  T1_LR/   T2_LR/   FLAIR_LR/                prospectively accelerated
-  BICUBIC_T1_LR/ BICUBIC_T2_LR/ BICUBIC_FLAIR_LR/
-                                             accelerated, bicubic-upsampled
-                                             onto the reference grid
+FARD_dataset/
+├── README.md
+├── LICENSE
+└── subjects/
+    ├── sub-01/
+    │   ├── T1_HR/        T1_LR/        T1_bicubic/
+    │   ├── T2_HR/        T2_LR/        T2_bicubic/
+    │   └── FLAIR_HR/     FLAIR_LR/     FLAIR_bicubic/
+    ├── sub-02/
+    ...
+    └── sub-10/
 ```
 
-10 subjects · 9 series each · 15,720 DICOM files · 6.3 GB.
+10 subjects · 9 DICOM series each · 15,720 files · 6.3 GB.
 
-The `BICUBIC_*` series are derived from the `*_LR` series by interpolation, and
-are included so the model inputs used in the paper are reproducible exactly
-rather than approximately.
+| Suffix | What it is |
+|---|---|
+| `_HR` | high-resolution reference acquisition |
+| `_LR` | prospectively accelerated acquisition |
+| `_bicubic` | the `_LR` series, bicubic-upsampled onto the `_HR` grid |
+
+The `_bicubic` series are derived from `_LR` by interpolation. They are included
+so the model inputs used in the paper are reproducible exactly rather than
+approximately — the upsampling is part of the method, not a preprocessing
+convenience.
+
+Subject numbering is arbitrary and carries no clinical ordering.
 
 ## Acquisition
 
@@ -105,6 +119,20 @@ datasets for that purpose.
 The registration pipeline that turns this raw data into the model's inputs is
 `data_prep/` in the code repository: intra-contrast alignment of accelerated to
 reference, inter-contrast alignment to an anchor, then anchor-to-MNI.
+
+A config matching this dataset's layout ships with the code. Point
+`FARD_DATASET` at wherever you extracted the download, then:
+
+```bash
+python -m data_prep.register_lr2hr \
+    --config data_prep/configs/fard_dataset_lr2hr.yaml --stage A
+python -m data_prep.register_lr2hr \
+    --config data_prep/configs/fard_dataset_lr2hr.yaml --stage B
+```
+
+Note that `data_prep/configs/sheba_lr2hr.yaml` addresses the authors' internal
+tree, which uses different series names. Use the `fard_dataset_*` config with
+this download.
 
 ## Citation
 

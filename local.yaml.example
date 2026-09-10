@@ -28,3 +28,5 @@ paths:
   FARD_DATA: /path/to/datasets
   FARD_RESULTS: /path/to/results
   FARD_ATLAS:   /path/to/atlas/DICOM_icbm152_hires
+  # only needed to run data_prep on the published Zenodo dataset
+  FARD_DATASET: /path/to/FARD_dataset

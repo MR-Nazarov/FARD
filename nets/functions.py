@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 the FARD authors. See LICENSE.
+
 import torch
 import functools
 import operator
